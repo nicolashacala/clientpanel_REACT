@@ -9,7 +9,9 @@ import Spinner from "../layout/Spinner";
 
 class Clients extends Component {
   state = {
-    totalOwed: 0
+    totalOwed: 0,
+    totalOfClients: 0,
+    averageOwed: 0
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -20,7 +22,15 @@ class Clients extends Component {
         return total + parseFloat(client.balance.toString());
       }, 0);
 
-      return { totalOwed: total };
+      const clientsCount = clients.length;
+
+      const average = total / clientsCount;
+
+      return {
+        totalOwed: total,
+        totalOfClients: clientsCount,
+        averageOwed: average
+      };
     }
 
     return null;
@@ -28,7 +38,7 @@ class Clients extends Component {
 
   render() {
     const { clients } = this.props;
-    const { totalOwed } = this.state;
+    const { totalOwed, totalOfClients, averageOwed } = this.state;
 
     if (clients) {
       return (
@@ -44,9 +54,19 @@ class Clients extends Component {
               <h5 className="text-right text-secondary">
                 Total Owed{" "}
                 <span className="text-primary">
-                  ${parseFloat(totalOwed).toFixed(2)}
+                  £{parseFloat(totalOwed).toFixed(2)}
                 </span>
               </h5>
+              <h4 className="text-right text-secondary">
+                Number of clients:{" "}
+                <span className="text-primary">{totalOfClients}</span>
+              </h4>
+              <h3 className="text-right text-secondary">
+                Average owed:{" "}
+                <span className="text-primary">
+                  £{parseFloat(averageOwed).toFixed(2)}
+                </span>
+              </h3>
             </div>
           </div>
           <table className="table table-striped">
